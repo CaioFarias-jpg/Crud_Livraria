@@ -42,14 +42,30 @@ class Categoria
         {
             if($categoria['id'] === $id)
             {
-
+                return $categoria;
             }
         }
+        return null;
     }
 
     public function cadastrar(string $nome, string $descricao): void
     {
+        $_SESSION['categoria'][] = [
+            'id' => $this->proximoId(),
+            'nome' => $nome,
+            'descricao' => $descricao 
+        ];
+    }
 
+    private function proximoId(): int
+    {
+        if(empty($_SESSION['categoria'])){
+            return 1;
+        }
+
+        $ids = array_column($_SESSION['categoria'], 'id');
+
+        return max($ids) +1;
     }
 
     public function atualizar(int $id, string $nome, string $descricao): void
